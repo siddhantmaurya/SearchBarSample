@@ -16,13 +16,27 @@ namespace SearchBarSample
     {
         List<string> Colors = new List<string>
         {
-            "Blue","Green","Red","Yellow","Light Blue","Magenta","Cyan"
+            "Blue","Green","Red","Yellow","Light Blue","Magenta","Cyan","White","Black","Orange"
         };
-        ObservableCollection<string> SearchList = new ObservableCollection<string>();
+
+        private ObservableCollection<string> myColors;
+
+        public ObservableCollection<string> MyColors
+        {
+            get { return myColors; }
+            set
+            {
+                myColors = value;
+                OnPropertyChanged(nameof(MyColors));
+            }
+        }
+
         public MainPage()
         {
             InitializeComponent();
             BindingContext = this;
+            MyColors = new ObservableCollection<string>();
+
         }
 
         private void search_clicked(object sender, EventArgs e)
@@ -33,7 +47,25 @@ namespace SearchBarSample
         private void search_text_changed(object sender, TextChangedEventArgs e)
         {
             var keyword = SearchBar.Text as string;
-            var result = Colors.Where(c => c.ToLower().Contains(keyword.ToLower()));
+            if (keyword.Length > 0)
+            {
+                var result = Colors.Where(c => c.ToLower().Contains(keyword.ToLower()));
+                SuggestionListView.ItemsSource = result;
+                SuggestionListView.IsVisible = true;
+            }
+            else
+            {
+                SuggestionListView.IsVisible = false;
+            }
+            
+        }
+
+        private void SuggestionListView_ItemTapped(object sender, ItemTappedEventArgs e)
+        {
+            var selectedColor = e.Item as string;
+            MyColors.Add(selectedColor);
+            
+            SuggestionListView.IsVisible = false;
         }
     }
 }

@@ -12,8 +12,12 @@
                    SearchButtonPressed="search_clicked"
                    TextChanged="search_text_changed"/>
         <Grid>
-            <ListView ItemsSource="{Binding Colors}"/>
-            <ListView x:Name="SearchListView" ItemsSource="{Binding SearchList}"/>
+            <ListView ItemsSource="{Binding MyColors}"/>
+            <ListView x:Name="SuggestionListView" 
+                      ItemsSource="{Binding SuggestionList}"
+                      ItemTapped="SuggestionListView_ItemTapped"
+                      BackgroundColor="LightGray"
+                      IsVisible="False"/>
         </Grid>
     </StackLayout>
 
